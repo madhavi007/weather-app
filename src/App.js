@@ -7,7 +7,8 @@ import {
   setCity,
   setLatitude,
   setLongitude,
-  setLoading
+  setLoading,
+  setError
 } from './actions';
 
 class App extends React.Component {
@@ -52,7 +53,7 @@ class App extends React.Component {
   }
 
  fetch_data = async () => {
-      fetch('http://localhost:4000/', {
+    const res = await fetch('http://localhost:4000/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: `
@@ -91,17 +92,20 @@ class App extends React.Component {
               }
             }` 
           }),
-})
-.then(res => res.json())
-.then(res => 
-  //setTimeout(() => {
-    this.props.dispatch(setData(res.data))
- // }, 100)
-);     
+});
+
+const result = await res.json();
+if(result.data.getCityByName == null){
+  console.log("error");
+  this.props.dispatch(setError(true));
+}else{
+  this.props.dispatch(setData(result.data))
+  this.props.dispatch(setError(false));
+}    
 }
   
   render() {
-    const { loading, data, city } = this.props;
+    const { loading, data, city, error } = this.props;
     return(
       <>
       <div className="App">
@@ -152,6 +156,7 @@ class App extends React.Component {
           </tbody>  
         </table>
         {loading && <span>Loading Data from Server</span>}
+        {error && <span>Api response is Null. Use https://graphql-weather-api.herokuapp.com/ as graphql wrapper.</span>}
         <img src="/refresh.png" onClick= {this.geoLocation} height="50" width="50"></img>
       </div>
       </>

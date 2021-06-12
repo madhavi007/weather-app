@@ -32,3 +32,11 @@ export function setLoading(loading) {
       loading: loading
     };
   }
+
+export function setError(error) {
+  return {
+    type: 'SET_ERROR',
+    error: error
+  };
+}
+  

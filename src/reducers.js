@@ -3,7 +3,8 @@ var initialState = {
     longitude: '',
     city: '',
     data: {},
-    loading: false
+    loading: false,
+    error: false
   };
   
   export default function mainReducer(state = initialState, action) {
@@ -27,7 +28,11 @@ var initialState = {
       case 'SET_LOADING':
         return Object.assign({}, state, {
             loading: action.loading
-        });  
+        }); 
+      case 'SET_ERROR':
+      return Object.assign({}, state, {
+          error: action.error
+      });  
       default:
         return state;
     }
