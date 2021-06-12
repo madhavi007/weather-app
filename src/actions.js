@@ -25,3 +25,10 @@ export function setData(data) {
     data: data
   };
 }
+
+export function setLoading(loading) {
+    return {
+      type: 'SET_LOADING',
+      loading: loading
+    };
+  }

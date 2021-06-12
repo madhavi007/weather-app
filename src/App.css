@@ -36,3 +36,28 @@
     transform: rotate(360deg);
   }
 }
+
+.table1 {
+  box-shadow: 9px 7px 40px -6px rgba(0,0,0,0.25);
+  overflow: hidden;
+  width: 300px;
+  padding: 0;
+  height: 400px;
+  min-height: 300px;
+  margin: 20px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+.clear-sky {
+  color: aliceblue;
+  background-image: url('../src/images/clear-sky.jpg');
+}
+
+.broken-sky {
+  color: aliceblue;
+  background-image: url('../src/images/broken_clouds.jpg');
+}
+

@@ -6,7 +6,8 @@ import {
   setData,
   setCity,
   setLatitude,
-  setLongitude
+  setLongitude,
+  setLoading
 } from './actions';
 
 class App extends React.Component {
@@ -33,6 +34,7 @@ class App extends React.Component {
               }
             }
             this.props.dispatch(setCity(city));
+            this.loading();
             this.fetch_data();
           },
           (error) => {
@@ -42,6 +44,12 @@ class App extends React.Component {
       })
     }
   }  
+  loading = async () => {
+    this.props.dispatch(setLoading(true));
+     setTimeout(() => {
+      this.props.dispatch(setLoading(false))
+      }, 100)
+  }
 
  fetch_data = async () => {
       fetch('https://graphql-weather-api.herokuapp.com/', {
@@ -86,17 +94,19 @@ class App extends React.Component {
 })
 .then(res => res.json())
 .then(res => 
- // setTimeout(() => {
+  //setTimeout(() => {
     this.props.dispatch(setData(res.data))
-  //}, 100)
+ // }, 100)
 );     
 }
   
   render() {
+    const { loading, data, city } = this.props;
+  
     return(
       <>
       <div className="App">
-        <table>
+        <table className={data.getCityByName?.weather?.summary?.description == 'broken clouds' ?  " table1 broken-sky": "table1 clear-sky"} >
           <thead>  
             <tr>
               <th>Key</th>
@@ -106,27 +116,28 @@ class App extends React.Component {
           <tbody>
               <tr>
                 <td>City</td>
-                <td>{this.props.city}</td>
+                <td>{city}</td>
               </tr>
               <tr>
                 <td>Country</td>
-                <td>{this.props.data.getCityByName?.country}</td>
+                <td>{data.getCityByName?.country}</td>
               </tr>
               <tr>
                 <td>Latitude</td>
-                <td>{this.props.data.getCityByName?.coord.lat}</td>
+                <td>{data.getCityByName?.coord.lat}</td>
               </tr>
               <tr>
                 <td>Longitude</td>
-                <td>{this.props.data.getCityByName?.coord.lon}</td>
+                <td>{data.getCityByName?.coord.lon}</td>
               </tr>
               <tr>
                 <td>Weather</td>
-                <td>{this.props.data.getCityByName?.weather?.summary?.description}</td>
+                <td>{data.getCityByName?.weather?.summary?.description}</td>
               </tr>    
           </tbody>  
         </table>
-        <button onClick= {this.geoLocation} className="button">Refresh</button>
+        {loading && <span>Loading Data from Server</span>}
+        <img src="/refresh.png" onClick= {this.geoLocation} height="50" width="50"></img>
       </div>
       </>
     );
