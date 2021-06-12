@@ -52,7 +52,7 @@ class App extends React.Component {
   }
 
  fetch_data = async () => {
-      fetch('https://graphql-weather-api.herokuapp.com/', {
+      fetch('http://localhost:4000/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ query: `
@@ -102,15 +102,14 @@ class App extends React.Component {
   
   render() {
     const { loading, data, city } = this.props;
-  
     return(
       <>
       <div className="App">
         <table className={data.getCityByName?.weather?.summary?.description == 'broken clouds' ?  " table1 broken-sky": "table1 clear-sky"} >
           <thead>  
             <tr>
-              <th>Key</th>
-              <th>Value</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -133,7 +132,23 @@ class App extends React.Component {
               <tr>
                 <td>Weather</td>
                 <td>{data.getCityByName?.weather?.summary?.description}</td>
-              </tr>    
+              </tr> 
+              <tr>
+                <td>Actual Temperature</td>
+                <td>{data.getCityByName?.weather?.temperature?.actual}</td>
+              </tr>  
+              <tr>
+                <td>FeelsLike Temperature</td>
+                <td>{data.getCityByName?.weather?.temperature?.feelsLike}</td>
+              </tr>  
+              <tr>
+                <td>Wind Speed</td>
+                <td>{data.getCityByName?.weather?.wind?.speed}</td>
+              </tr>  
+              <tr>
+                <td>Humidity</td>
+                <td>{data.getCityByName?.weather?.clouds?.humidity}</td>
+              </tr>   
           </tbody>  
         </table>
         {loading && <span>Loading Data from Server</span>}
