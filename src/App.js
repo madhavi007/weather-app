@@ -21,27 +21,31 @@ class App extends React.Component {
         const longitude= position.coords.longitude;
         this.props.dispatch(setLatitude(latitude));
         this.props.dispatch(setLongitude(longitude));
-
-        Geocode.fromLatLng(latitude, longitude).then(
-          (response) => {
-            let city;
-            for (let i = 0; i < response.results[0].address_components.length; i++) {
-              for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
-                switch (response.results[0].address_components[i].types[j]) {
-                  case "locality":
-                    city = response.results[0].address_components[i].long_name;
-                    break;
+        if(this.props.latitude == latitude && this.props.longitude == longitude && this.props.city!=''){
+          this.loading();
+          this.fetch_data();
+        }else{
+          Geocode.fromLatLng(latitude, longitude).then(
+            (response) => {
+              let city;
+              for (let i = 0; i < response.results[0].address_components.length; i++) {
+                for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
+                  switch (response.results[0].address_components[i].types[j]) {
+                    case "locality":
+                      city = response.results[0].address_components[i].long_name;
+                      break;
+                  }
                 }
               }
+              this.props.dispatch(setCity(city));
+              this.loading();
+              this.fetch_data();
+            },
+            (error) => {
+              console.error(error);
             }
-            this.props.dispatch(setCity(city));
-            this.loading();
-            this.fetch_data();
-          },
-          (error) => {
-            console.error(error);
-          }
-        );
+          );
+        }   
       })
     }
   }  
@@ -96,7 +100,6 @@ class App extends React.Component {
 
 const result = await res.json();
 if(result.data.getCityByName == null){
-  console.log("error");
   this.props.dispatch(setError(true));
 }else{
   this.props.dispatch(setData(result.data))
@@ -155,9 +158,13 @@ if(result.data.getCityByName == null){
               </tr>   
           </tbody>  
         </table>
-        {loading && <span>Loading Data from Server</span>}
-        {error && <span>Api response is Null. Use https://graphql-weather-api.herokuapp.com/ as graphql wrapper.</span>}
-        <img src="/refresh.png" onClick= {this.geoLocation} height="50" width="50"></img>
+        <div>
+          {loading && <span>Loading Data from Server</span>}
+          {error && <span className="error">Api response is Null. Use https://graphql-weather-api.herokuapp.com/ as graphql wrapper.</span>}
+        </div>
+        <div>
+          <img src="/refresh.png" onClick= {this.geoLocation} height="50" width="50"></img>
+        </div>
       </div>
       </>
     );

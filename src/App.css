@@ -61,3 +61,6 @@
   background-image: url('../src/images/broken_clouds.jpg');
 }
 
+.error{
+  color: red;
+}
