@@ -4,7 +4,7 @@ This is a Weather App which based on your detected current location, fetches inf
 I've tried to optimize the code in such a way that it won't make any redundant calls if the location coordinates don't change. 
 
 # Note
-Create Google API key from https://developers.google.com/maps/documentation/geocoding/get-api-key and enable geocoding. Use that in .env file and add the following variable REACT_APP_GOOGLE_API_KEY=<Your-api-key>
+Create Google API key from https://developers.google.com/maps/documentation/geocoding/get-api-key and enable geocoding. Use that in .env file and add the following variable `REACT_APP_GOOGLE_API_KEY= <Your-api-key>`
 
 ## Available Scripts
 
@@ -20,5 +20,5 @@ You will also see any lint errors in the console.
 
 # Future Enhancements 
 - Currently I've added a background image to update based on a weather summary for two values which can be enhanced if I've exhaustive list of all weather summaries.
- - Currently the prerequisite is the location is shared but we can add checks and notify users if not shared.
- - Code can be transformed from flat to modular structure. For instance If I had multiple queries, I would move them to a separate folder for all Graphql wrappers.
+- Currently the prerequisite is the location is shared but we can add checks and notify users if not shared.
+- Code can be transformed from flat to modular structure. For instance If I had multiple queries, I would move them to a separate folder for all Graphql wrappers.
